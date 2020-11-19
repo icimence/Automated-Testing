@@ -21,7 +21,7 @@ public class AnalysisProcess {
         graph.MakeClassGraph();
         graph.MakeMethodGraph();
         System.out.println("graph made");
-        graph.outputDotContent();
+//        graph.outputDotContent();
         changeInfo = new ChangeInfoHandler(args[2]);
         if (args[0].equals("-c")){
             selectClass();

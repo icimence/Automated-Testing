@@ -117,8 +117,8 @@ public class MakeGraphProcess {
 
     public void outputDotContent() throws IOException {
         String outPath = "C:\\Users\\lenovo\\Desktop\\dot";
-        String classDot=outPath+"\\class.dot";
-        String methodDot=outPath+"\\method.dot";
+        String classDot=outPath+"\\class-MoreTriangle.dot";
+        String methodDot=outPath+"\\method-MoreTriangle.dot";
         PrintToFile.print(classDotFileContent,classDot);
         PrintToFile.print(methodDotFileContent,methodDot);
     }
