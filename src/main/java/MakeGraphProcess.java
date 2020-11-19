@@ -14,10 +14,7 @@ import com.ibm.wala.util.config.AnalysisScopeReader;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class MakeGraphProcess {
     public AnalysisScope scope;
@@ -79,13 +76,43 @@ public class MakeGraphProcess {
                             String inputString = "    \""+classInnerName+"\" -> \""+preClassInnerName+"\";";
                             if (!classDotFileContent.contains(inputString))
                                 classDotFileContent.add("    \""+classInnerName+"\" -> \""+preClassInnerName+"\";");
-                            relyMap.put(classInnerName,preClassInnerName);
+                            if (relyMap.containsKey(preClassInnerName))
+                                relyMap.put(preClassInnerName,classInnerName);
                         }
                     }
                 }
             }
         }
         classDotFileContent.add("}");
+    }
 
+    public void MakeMethodGraph(){
+        String title="digraph method {";
+        List<String> methodDotFileContent = new ArrayList<String>();
+        methodDotFileContent.add(title);
+        for (CGNode node : cg) {
+            if (node.getMethod() instanceof ShrikeBTMethod) {
+                ShrikeBTMethod method = (ShrikeBTMethod) node.getMethod();
+                if ("Application".equals(method.getDeclaringClass().getClassLoader().toString())) {
+                    String classInnerName = method.getDeclaringClass().getName().toString();
+                    String signature = method.getSignature();
+                    Iterator<CGNode> predNodes= cg.getPredNodes(node);
+                    if(!predNodes.hasNext()) continue;
+                    while(predNodes.hasNext()){
+                        CGNode x=predNodes.next();
+                        if("Application".equals(x.getMethod().getDeclaringClass().getClassLoader().toString())) {
+                            String presignature=x.getMethod().getSignature();
+                            if (!methodDotFileContent.contains("    \""+signature+"\" -> \""+presignature+"\";"))
+                                methodDotFileContent.add("    \""+signature+"\" -> \""+presignature+"\";");
+                        }
+                    }
+                }
+            }
+        }
+        methodDotFileContent.add("}");
+    }
+
+    public void outputDotContent(){
+        String outPath = "";
     }
 }

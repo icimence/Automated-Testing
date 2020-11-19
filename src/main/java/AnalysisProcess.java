@@ -12,5 +12,6 @@ public class AnalysisProcess {
         CHACallGraph cg = graph.cg;
         graph.MakeClassGraph();
         graph.MakeMethodGraph();
+        graph.outputDotContent();
     }
 }
