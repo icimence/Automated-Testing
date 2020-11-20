@@ -1,7 +1,5 @@
 MakeGraphProcess.class
-Readme.class
-main.class
 PrintToFile.class
-InputProcess.class
+ChangeInfoHandler.class
 AnalysisProcess.class
-changeInfoProcess.class
+Application.class
