@@ -24,8 +24,8 @@ public class MakeGraphProcess {
     public CHACallGraph cg;
 
     public MakeGraphProcess(String Classpath) throws IOException, InvalidClassFileException, ClassHierarchyException, CancelException {
-        String scopePath = ".\\src\\main\\resources\\scope.txt";
-        String exclusionPath = ".\\src\\main\\resources\\exclusion.txt";
+        String scopePath = "scope.txt";
+        String exclusionPath = "exclusion.txt";
         scope = AnalysisScopeReader.readJavaScope(scopePath, new File(exclusionPath), MakeGraphProcess.class.getClassLoader());
         File classFile = new File(Classpath);
         List<File> classFileList = new ArrayList<File>();
