@@ -23,9 +23,20 @@ public class MakeGraphProcess {
     private List<String> methodDotFileContent = new ArrayList<String>();
     public CHACallGraph cg;
 
+    /**
+     *创建scope
+     * @param Classpath target文件目录
+     * @throws IOException 防止文件打不开
+     * @throws InvalidClassFileException 防止class文件异常
+     * @throws ClassHierarchyException  CHA异常
+     * @throws CancelException 异常
+     */
     public MakeGraphProcess(String Classpath) throws IOException, InvalidClassFileException, ClassHierarchyException, CancelException {
         String scopePath = "scope.txt";
         String exclusionPath = "exclusion.txt";
+        if (!Classpath.endsWith("target")){
+            System.err.println("Warn: ClassPath Should Be The Target Dir");
+        }
         scope = AnalysisScopeReader.readJavaScope(scopePath, new File(exclusionPath), MakeGraphProcess.class.getClassLoader());
         File classFile = new File(Classpath);
         List<File> classFileList = new ArrayList<File>();
@@ -36,7 +47,7 @@ public class MakeGraphProcess {
         ClassHierarchy cha = ClassHierarchyFactory.makeWithRoot(scope);
         Iterable<Entrypoint> eps = new AllApplicationEntrypoints(scope, cha);
         cg = new CHACallGraph(cha);
-        System.out.println("about to run cg.init(eps)");
+        System.out.println("About To Run cg.init(eps)");
         cg.init(eps);
     }
 
@@ -48,6 +59,10 @@ public class MakeGraphProcess {
      */
     private static void travelClassPath(File classFile, List<File> classFileList) {
         File[] allFilesInClassFilePath = classFile.listFiles();
+        if (allFilesInClassFilePath == null){
+            System.err.println("Make Sure Your Target DirPath Is Correct Or Not Empty");
+            System.exit(4);
+        }
         for (File file : allFilesInClassFilePath) {
             if (file.isDirectory()) {
                 travelClassPath(file, classFileList);
